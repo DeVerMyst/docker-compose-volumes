@@ -2,7 +2,8 @@ version: "3.9"
 
 services:
   database:
-    image: postgres:13
+    image: postgres:15-alpine
+    container_name: postgres_container
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
@@ -10,8 +11,10 @@ services:
     ports:
       - "5432:5432"
     volumes:
+      # Persistance des données (le volume survit à l'arrêt du conteneur)
       - db_data:/var/lib/postgresql/data
+      # Script d'initialisation automatique
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
-  db_data:
+  db_data: # Déclaration du volume nommé
